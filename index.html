@@ -9,11 +9,11 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --sky:#c2e8f8;--ocean:#29b6e8;--deep:#0a3d55;--sand:#fff3c4;
-  --c1:#2980b9;--c1l:#7ec8f0;--c1d:#1a5276;
-  --c2:#e67e22;--c2l:#f5a95e;--c2d:#a04000;
-  --c3:#9b59b6;--c3l:#c89fd8;--c3d:#5b2c6f;
-  --c4:#16a085;--c4l:#4eceb5;--c4d:#0e6655;
-  --c5:#d4ac0d;--c5l:#f0d060;--c5d:#9a7d0a;
+  --c1:#FF4757;--c1l:#FF8594;--c1d:#C0001A;
+  --c2:#FF7F3F;--c2l:#FFB080;--c2d:#C04800;
+  --c3:#A855F7;--c3l:#D4A0FF;--c3d:#6B21B8;
+  --c4:#00C9A7;--c4l:#5EECD4;--c4d:#007A66;
+  --c5:#FFD600;--c5l:#FFE966;--c5d:#B89A00;
 }
 body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--sky);overflow-x:hidden;user-select:none}
 
@@ -191,35 +191,35 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   <h1 class="intro-h">왓츠 인 마이<br>썸머 블록? 🧱</h1>
   <p class="intro-p">레고랜드 여름 아이템 블록 키링을<br>비치백에 자유롭게 달아봐요!<br>5개를 채우면 내 타입이 나와요.</p>
   <div class="intro-bag-wrap">
-    <svg viewBox="0 0 220 190" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <pattern id="im" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
-          <line x1="0" y1="0" x2="22" y2="0" stroke="#90cde4" stroke-width="1.2"/>
-          <line x1="0" y1="0" x2="0" y2="22" stroke="#90cde4" stroke-width="1.2"/>
+        <pattern id="im" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="18" y2="0" stroke="#82c8e2" stroke-width="1"/>
+          <line x1="0" y1="0" x2="0" y2="18" stroke="#82c8e2" stroke-width="1"/>
         </pattern>
+        <clipPath id="iclip"><path d="M14 54 Q14 44 26 44 L174 44 Q186 44 186 54 L180 168 Q180 178 168 178 L32 178 Q20 178 20 168 Z"/></clipPath>
+        <linearGradient id="ibf" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(225,247,255,.72)"/>
+          <stop offset="100%" stop-color="rgba(195,235,252,.45)"/>
+        </linearGradient>
       </defs>
-      <!-- shadow -->
-      <ellipse cx="110" cy="184" rx="88" ry="8" fill="rgba(10,61,85,.12)"/>
-      <!-- depth right -->
-      <path d="M186 52 L206 62 L206 168 L186 158 Z" fill="rgba(140,200,228,.55)" stroke="#7bbcd4" stroke-width="1"/>
-      <!-- body -->
-      <rect x="22" y="52" width="164" height="108" rx="18" fill="rgba(220,243,254,.55)" stroke="#7bbcd4" stroke-width="2.5"/>
-      <rect x="22" y="52" width="164" height="108" rx="18" fill="url(#im)" opacity=".7"/>
-      <!-- top trim -->
-      <rect x="18" y="45" width="172" height="12" rx="6" fill="#29b6e8"/>
-      <!-- depth top -->
-      <path d="M190 45 L210 55 L190 57 Z" fill="#1a9fc8"/>
-      <!-- handle L -->
-      <path d="M70 45 Q62 12 88 8 Q114 4 110 45" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
-      <!-- handle R -->
-      <path d="M130 45 Q126 4 152 8 Q178 4 170 45" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
-      <!-- label patch -->
-      <rect x="76" y="85" width="68" height="42" rx="7" fill="rgba(255,255,255,.75)"/>
-      <text x="110" y="103" text-anchor="middle" font-size="7.5" fill="#1a8fc1" font-weight="800" letter-spacing="1">LEGOLAND</text>
-      <text x="110" y="114" text-anchor="middle" font-size="7" fill="#5a8fa8">SUMMER PLAY</text>
-      <text x="110" y="123" text-anchor="middle" font-size="7" fill="#5a8fa8">2025</text>
-      <!-- ? -->
-      <text x="110" y="75" text-anchor="middle" font-size="16" fill="#1a8fc1" opacity=".35">? ? ?</text>
+      <ellipse cx="108" cy="193" rx="84" ry="7" fill="rgba(10,61,85,.12)"/>
+      <path d="M32 168 Q20 178 32 178 L168 178 Q180 178 180 168 L196 178 L24 178 Z" fill="rgba(110,180,215,.5)"/>
+      <path d="M186 54 L202 62 L196 178 L180 168 Z" fill="rgba(140,205,232,.6)" stroke="#72b4cc" stroke-width="1"/>
+      <path d="M14 54 Q14 44 26 44 L174 44 Q186 44 186 54 L180 168 Q180 178 168 178 L32 178 Q20 178 20 168 Z" fill="url(#ibf)" stroke="#78c0da" stroke-width="2"/>
+      <rect x="0" y="0" width="220" height="200" fill="url(#im)" clip-path="url(#iclip)" opacity=".7"/>
+      <ellipse cx="100" cy="44" rx="86" ry="8" fill="rgba(195,240,255,.75)" stroke="#78c0da" stroke-width="1.2"/>
+      <path d="M60 44 Q54 10 76 6 Q98 2 94 44" fill="none" stroke="#1480a8" stroke-width="9" stroke-linecap="round"/>
+      <path d="M60 44 Q54 10 76 6 Q98 2 94 44" fill="none" stroke="#29b6e8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M60 44 Q54 10 76 6 Q98 2 94 44" fill="none" stroke="rgba(255,255,255,.38)" stroke-width="3" stroke-linecap="round"/>
+      <path d="M106 44 Q102 2 124 6 Q146 2 140 44" fill="none" stroke="#1480a8" stroke-width="9" stroke-linecap="round"/>
+      <path d="M106 44 Q102 2 124 6 Q146 2 140 44" fill="none" stroke="#29b6e8" stroke-width="7" stroke-linecap="round"/>
+      <path d="M106 44 Q102 2 124 6 Q146 2 140 44" fill="none" stroke="rgba(255,255,255,.38)" stroke-width="3" stroke-linecap="round"/>
+      <rect x="62" y="96" width="76" height="48" rx="7" fill="rgba(255,255,255,.78)"/>
+      <text x="100" y="114" text-anchor="middle" font-size="7.5" fill="#1a8fc1" font-weight="800" letter-spacing="1">LEGOLAND</text>
+      <text x="100" y="125" text-anchor="middle" font-size="7" fill="#5a8fa8">SUMMER PLAY</text>
+      <text x="100" y="136" text-anchor="middle" font-size="7" fill="#5a8fa8">2025</text>
+      <text x="100" y="76" text-anchor="middle" font-size="15" fill="#1a8fc1" opacity=".3">? ? ?</text>
     </svg>
   </div>
   <button class="btn-go" onclick="showScreen('drag-screen')">블록 키링 달러 가기 →</button>
@@ -241,55 +241,70 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
     <div class="drop-hint" id="drop-hint"></div>
     <div class="bag-3d-wrap" id="bag-wrap">
       <div id="placed-layer"></div>
-      <svg id="bag-svg" viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <svg id="bag-svg" viewBox="0 0 290 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
         <defs>
-          <pattern id="mesh" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-            <line x1="0" y1="0" x2="24" y2="0" stroke="#90cde4" stroke-width="1.2"/>
-            <line x1="0" y1="0" x2="0" y2="24" stroke="#90cde4" stroke-width="1.2"/>
+          <pattern id="mesh" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="22" y2="0" stroke="#82c4de" stroke-width="1.1"/>
+            <line x1="0" y1="0" x2="0" y2="22" stroke="#82c4de" stroke-width="1.1"/>
           </pattern>
-          <filter id="bagShadow">
-            <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(10,61,85,.2)"/>
+          <clipPath id="frontClip">
+            <path d="M16 60 Q16 48 30 48 L244 48 Q258 48 258 60 L250 276 Q250 288 236 288 L38 288 Q24 288 24 276 Z"/>
+          </clipPath>
+          <linearGradient id="bagFront" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(228,248,255,.75)"/>
+            <stop offset="100%" stop-color="rgba(195,235,252,.42)"/>
+          </linearGradient>
+          <linearGradient id="bagSide" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(148,205,230,.72)"/>
+            <stop offset="100%" stop-color="rgba(108,178,210,.52)"/>
+          </linearGradient>
+          <filter id="sf" x="-10%" y="-5%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="rgba(10,61,85,.18)"/>
           </filter>
-          <linearGradient id="handleG" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#1a9fc8"/><stop offset="100%" stop-color="#5dd0f0"/>
-          </linearGradient>
-          <linearGradient id="trimG" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#3dc8f0"/><stop offset="100%" stop-color="#1a9fc8"/>
-          </linearGradient>
-          <linearGradient id="sideG" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="rgba(160,220,245,.7)"/><stop offset="100%" stop-color="rgba(120,190,220,.5)"/>
-          </linearGradient>
         </defs>
-        <!-- shadow -->
-        <ellipse cx="142" cy="293" rx="100" ry="9" fill="rgba(10,61,85,.13)"/>
-        <!-- 3D depth right face -->
-        <path d="M244 68 L272 80 L272 278 L244 266 Z" fill="url(#sideG)" stroke="#80bcd4" stroke-width="1.5"/>
-        <!-- 3D depth bottom -->
-        <path d="M18 268 L244 268 L272 280 L46 280 Z" fill="rgba(140,200,230,.5)" stroke="#80bcd4" stroke-width="1"/>
-        <!-- main body -->
-        <rect x="18" y="68" width="226" height="200" rx="22" fill="rgba(215,242,254,.52)" stroke="#80c8e0" stroke-width="3" filter="url(#bagShadow)"/>
-        <!-- mesh overlay -->
-        <rect x="18" y="68" width="226" height="200" rx="22" fill="url(#mesh)" opacity=".75"/>
-        <!-- inner sheen -->
-        <rect x="18" y="68" width="226" height="40" rx="22" fill="rgba(255,255,255,.22)"/>
-        <!-- top trim bar -->
-        <rect x="12" y="58" width="238" height="16" rx="8" fill="url(#trimG)"/>
-        <!-- trim top shine -->
-        <rect x="12" y="58" width="238" height="6" rx="4" fill="rgba(255,255,255,.35)"/>
-        <!-- 3D trim side -->
-        <path d="M250 58 L278 70 L278 76 L250 74 Z" fill="#1a9fc8" opacity=".8"/>
-        <!-- handle left -->
-        <path d="M78 58 Q68 14 100 10 Q132 6 128 58" fill="none" stroke="url(#handleG)" stroke-width="13" stroke-linecap="round"/>
-        <path d="M78 58 Q68 14 100 10 Q132 6 128 58" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/>
-        <!-- handle right -->
-        <path d="M152 58 Q148 6 180 10 Q212 6 202 58" fill="none" stroke="url(#handleG)" stroke-width="13" stroke-linecap="round"/>
-        <path d="M152 58 Q148 6 180 10 Q212 6 202 58" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/>
-        <!-- label patch -->
-        <rect x="88" y="168" width="108" height="58" rx="9" fill="rgba(255,255,255,.76)"/>
-        <rect x="88" y="168" width="108" height="58" rx="9" fill="none" stroke="rgba(41,182,232,.25)" stroke-width="1.5"/>
-        <text x="142" y="188" text-anchor="middle" font-size="9.5" fill="#1a8fc1" font-weight="800" letter-spacing="1.2">LEGOLAND</text>
-        <text x="142" y="202" text-anchor="middle" font-size="8.5" fill="#5a8fa8">SUMMER PLAY</text>
-        <text x="142" y="216" text-anchor="middle" font-size="8.5" fill="#5a8fa8">2025 × DIG</text>
+
+        <!-- 바닥 그림자 -->
+        <ellipse cx="148" cy="302" rx="112" ry="9" fill="rgba(10,61,85,.13)"/>
+
+        <!-- 바닥면 (3D) -->
+        <path d="M24 276 Q24 288 38 288 L236 288 Q250 288 250 276 L272 286 L6 286 Z" fill="rgba(108,178,215,.55)"/>
+
+        <!-- 오른쪽 측면 (3D) - 더 자연스러운 사다리꼴 -->
+        <path d="M258 60 Q266 56 278 64 L270 280 Q262 288 250 276 Z" fill="url(#bagSide)" stroke="#72b0cc" stroke-width="1.2"/>
+
+        <!-- 안쪽 상단 입구 (타원 - 깊이감) -->
+        <ellipse cx="137" cy="50" rx="121" ry="12" fill="rgba(190,238,255,.7)" stroke="#78bcd8" stroke-width="1.5"/>
+        <ellipse cx="137" cy="50" rx="100" ry="7" fill="rgba(220,248,255,.5)"/>
+
+        <!-- 가방 본체 앞면 -->
+        <path d="M16 60 Q16 48 30 48 L244 48 Q258 48 258 60 L250 276 Q250 288 236 288 L38 288 Q24 288 24 276 Z"
+          fill="url(#bagFront)" stroke="#78bcd8" stroke-width="2.5" filter="url(#sf)"/>
+
+        <!-- 메쉬 그물망 -->
+        <rect x="0" y="0" width="290" height="310" fill="url(#mesh)" clip-path="url(#frontClip)" opacity=".72"/>
+
+        <!-- 상단 안쪽 하이라이트 -->
+        <path d="M16 60 Q16 48 30 48 L244 48 Q258 48 258 60 L252 90 Q252 82 238 82 L36 82 Q22 82 22 90 Z" fill="rgba(255,255,255,.18)"/>
+
+        <!-- 손잡이 왼쪽 (3겹 = 그림자/본체/하이라이트) -->
+        <path d="M76 50 Q66 6 104 4 Q142 2 134 50" fill="none" stroke="#0e6e90" stroke-width="15" stroke-linecap="round"/>
+        <path d="M76 50 Q66 6 104 4 Q142 2 134 50" fill="none" stroke="#29b6e8" stroke-width="11" stroke-linecap="round"/>
+        <path d="M76 50 Q66 6 104 4 Q142 2 134 50" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="5" stroke-linecap="round"/>
+
+        <!-- 손잡이 오른쪽 -->
+        <path d="M152 50 Q146 2 184 4 Q222 2 214 50" fill="none" stroke="#0e6e90" stroke-width="15" stroke-linecap="round"/>
+        <path d="M152 50 Q146 2 184 4 Q222 2 214 50" fill="none" stroke="#29b6e8" stroke-width="11" stroke-linecap="round"/>
+        <path d="M152 50 Q146 2 184 4 Q222 2 214 50" fill="none" stroke="rgba(255,255,255,.42)" stroke-width="5" stroke-linecap="round"/>
+
+        <!-- 오른쪽 측면 손잡이 연결 (3D) -->
+        <path d="M214 50 Q220 48 228 52 Q220 4 228 8 Q224 2 220 4 Q222 2 214 50" fill="none" stroke="#0e6e90" stroke-width="5" stroke-linecap="round" opacity=".5"/>
+
+        <!-- 레이블 패치 -->
+        <rect x="88" y="172" width="114" height="62" rx="10" fill="rgba(255,255,255,.8)"/>
+        <rect x="88" y="172" width="114" height="62" rx="10" fill="none" stroke="rgba(41,182,232,.2)" stroke-width="1.5"/>
+        <text x="145" y="193" text-anchor="middle" font-size="9.5" fill="#1a8fc1" font-weight="800" letter-spacing="1.2">LEGOLAND</text>
+        <text x="145" y="207" text-anchor="middle" font-size="8.5" fill="#5a8fa8">SUMMER PLAY</text>
+        <text x="145" y="220" text-anchor="middle" font-size="8.5" fill="#5a8fa8">2025 × DIG</text>
       </svg>
     </div>
   </div>
@@ -309,24 +324,36 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
     <div class="rc-eye">MY SUMMER BEACH BAG</div>
     <div class="rc-bag-area">
       <div id="rc-placed"></div>
-      <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+      <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
         <defs>
-          <pattern id="mesh2" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-            <line x1="0" y1="0" x2="20" y2="0" stroke="#90cde4" stroke-width="1"/>
-            <line x1="0" y1="0" x2="0" y2="20" stroke="#90cde4" stroke-width="1"/>
+          <pattern id="mesh2" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="18" y2="0" stroke="#82c4de" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="18" stroke="#82c4de" stroke-width="1"/>
           </pattern>
+          <clipPath id="rc-clip">
+            <path d="M12 52 Q12 42 24 42 L214 42 Q226 42 226 52 L220 240 Q220 250 208 250 L32 250 Q20 250 20 240 Z"/>
+          </clipPath>
+          <linearGradient id="rcf" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(228,248,255,.75)"/>
+            <stop offset="100%" stop-color="rgba(195,235,252,.42)"/>
+          </linearGradient>
         </defs>
-        <ellipse cx="125" cy="244" rx="88" ry="7" fill="rgba(10,61,85,.1)"/>
-        <path d="M214 58 L234 67 L234 232 L214 223 Z" fill="rgba(160,220,245,.55)" stroke="#80bcd4" stroke-width="1.2"/>
-        <rect x="14" y="58" width="200" height="166" rx="18" fill="rgba(215,242,254,.55)" stroke="#80c8e0" stroke-width="2.5"/>
-        <rect x="14" y="58" width="200" height="166" rx="18" fill="url(#mesh2)" opacity=".7"/>
-        <rect x="8" y="50" width="212" height="14" rx="7" fill="#29b6e8"/>
-        <path d="M62 50 Q55 16 80 12 Q105 8 102 50" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
-        <path d="M124 50 Q122 8 148 12 Q173 8 168 50" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
-        <rect x="78" y="142" width="96" height="52" rx="8" fill="rgba(255,255,255,.78)"/>
-        <text x="126" y="160" text-anchor="middle" font-size="8.5" fill="#1a8fc1" font-weight="800" letter-spacing="1">LEGOLAND</text>
-        <text x="126" y="173" text-anchor="middle" font-size="7.5" fill="#5a8fa8">SUMMER PLAY</text>
-        <text x="126" y="185" text-anchor="middle" font-size="7.5" fill="#5a8fa8">2025 × DIG</text>
+        <ellipse cx="128" cy="254" rx="96" ry="7" fill="rgba(10,61,85,.1)"/>
+        <path d="M220 52 Q228 48 238 56 L232 244 Q226 252 220 240 Z" fill="rgba(140,205,232,.6)" stroke="#72b0cc" stroke-width="1"/>
+        <path d="M20 240 Q20 250 32 250 L208 250 Q220 250 220 240 L238 248 L4 248 Z" fill="rgba(108,178,215,.45)"/>
+        <ellipse cx="119" cy="44" rx="107" ry="10" fill="rgba(190,238,255,.65)" stroke="#78bcd8" stroke-width="1.2"/>
+        <path d="M12 52 Q12 42 24 42 L214 42 Q226 42 226 52 L220 240 Q220 250 208 250 L32 250 Q20 250 20 240 Z" fill="url(#rcf)" stroke="#78bcd8" stroke-width="2"/>
+        <rect x="0" y="0" width="260" height="260" fill="url(#mesh2)" clip-path="url(#rc-clip)" opacity=".7"/>
+        <path d="M56 44 Q48 8 72 4 Q96 0 90 44" fill="none" stroke="#0e6e90" stroke-width="11" stroke-linecap="round"/>
+        <path d="M56 44 Q48 8 72 4 Q96 0 90 44" fill="none" stroke="#29b6e8" stroke-width="8" stroke-linecap="round"/>
+        <path d="M56 44 Q48 8 72 4 Q96 0 90 44" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M108 44 Q104 0 128 4 Q152 0 146 44" fill="none" stroke="#0e6e90" stroke-width="11" stroke-linecap="round"/>
+        <path d="M108 44 Q104 0 128 4 Q152 0 146 44" fill="none" stroke="#29b6e8" stroke-width="8" stroke-linecap="round"/>
+        <path d="M108 44 Q104 0 128 4 Q152 0 146 44" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="3.5" stroke-linecap="round"/>
+        <rect x="72" y="148" width="100" height="56" rx="8" fill="rgba(255,255,255,.8)"/>
+        <text x="122" y="167" text-anchor="middle" font-size="8.5" fill="#1a8fc1" font-weight="800" letter-spacing="1">LEGOLAND</text>
+        <text x="122" y="179" text-anchor="middle" font-size="7.5" fill="#5a8fa8">SUMMER PLAY</text>
+        <text x="122" y="191" text-anchor="middle" font-size="7.5" fill="#5a8fa8">2025 × DIG</text>
       </svg>
     </div>
     <div class="rc-bag-name" id="rc-name"></div>
