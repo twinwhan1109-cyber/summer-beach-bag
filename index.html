@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>왓츠 인 마이 썸머 블록?</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --sky:#c2e8f8;--ocean:#29b6e8;--deep:#0a3d55;--sand:#fff3c4;
+  --c1:#2980b9;--c1l:#7ec8f0;--c1d:#1a5276;
+  --c2:#e67e22;--c2l:#f5a95e;--c2d:#a04000;
+  --c3:#9b59b6;--c3l:#c89fd8;--c3d:#5b2c6f;
+  --c4:#16a085;--c4l:#4eceb5;--c4d:#0e6655;
+  --c5:#d4ac0d;--c5l:#f0d060;--c5d:#9a7d0a;
+}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--sky);overflow-x:hidden;user-select:none}
+
+/* ── 화면 전환 ── */
+.screen{display:none !important}
+.screen.active{display:flex !important;flex-direction:column}
+
+/* ════ 인트로 ════ */
+#intro{
+  min-height:100svh;
+  background:linear-gradient(170deg,#a8d8f0 0%,#c8eefa 45%,#fff6d0 100%);
+  align-items:center;justify-content:center;
+  padding:48px 28px;text-align:center;gap:0;
+}
+.intro-pill{
+  background:var(--deep);color:#fff;font-size:11px;font-weight:800;
+  letter-spacing:1.5px;padding:6px 18px;border-radius:99px;margin-bottom:22px;
+  display:inline-block;
+}
+.intro-h{font-size:34px;font-weight:900;color:var(--deep);line-height:1.2;margin-bottom:14px}
+.intro-p{font-size:14px;color:#3a6a80;line-height:1.8;margin-bottom:36px}
+.intro-bag-wrap{margin:0 auto 36px;width:220px;height:190px;filter:drop-shadow(0 16px 32px rgba(10,61,85,.18))}
+.btn-go{
+  background:var(--deep);color:#fff;border:none;border-radius:99px;
+  padding:17px 52px;font-size:16px;font-weight:800;cursor:pointer;
+  box-shadow:0 6px 24px rgba(10,61,85,.28);transition:transform .12s;
+}
+.btn-go:active{transform:scale(.96)}
+
+/* ════ 드래그 화면 ════ */
+#drag-screen{min-height:100svh;background:linear-gradient(180deg,#b0e2f8 0%,#d8f3fb 50%,#f5faff 100%)}
+
+.top-bar{
+  padding:14px 20px 10px;text-align:center;
+  background:rgba(255,255,255,.45);backdrop-filter:blur(10px);
+  position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(41,182,232,.15);
+}
+.top-bar h2{font-size:15px;font-weight:900;color:var(--deep)}
+.top-bar p{font-size:11px;color:#4a8aa8;margin-top:2px}
+.dot-row{display:flex;justify-content:center;gap:8px;margin-top:8px}
+.dot{
+  width:11px;height:11px;border-radius:50%;
+  background:rgba(41,182,232,.18);border:2px solid rgba(41,182,232,.3);
+  transition:all .3s;
+}
+.dot.on{background:var(--ocean);border-color:var(--ocean);transform:scale(1.15)}
+
+/* 가방 존 */
+.bag-zone{
+  position:relative;width:100%;max-width:480px;align-self:center;
+  height:320px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* 드롭 힌트 */
+.drop-hint{
+  position:absolute;inset:12px;border-radius:24px;
+  border:2.5px dashed transparent;
+  transition:border-color .2s,background .2s;
+  pointer-events:none;z-index:2;
+}
+.drop-hint.hover{border-color:var(--ocean);background:rgba(41,182,232,.07)}
+
+/* 3D 가방 컨테이너 */
+.bag-3d-wrap{
+  position:relative;width:280px;height:300px;
+  filter:drop-shadow(0 20px 40px rgba(10,61,85,.22));
+}
+
+/* 자유배치 키링 레이어 */
+#placed-layer{
+  position:absolute;inset:0;z-index:10;pointer-events:none;
+}
+.placed-kr{
+  position:absolute;pointer-events:auto;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;
+  transition:filter .15s;
+}
+.placed-kr:hover{filter:brightness(1.08)}
+.placed-kr .pr{width:10px;height:10px;border-radius:50%;border:2px solid rgba(10,61,85,.4);background:rgba(255,255,255,.7);margin-bottom:0}
+.placed-kr .ps{width:2px;height:14px;background:rgba(10,61,85,.3)}
+.placed-kr svg{width:52px;height:40px}
+.placed-kr .pl{font-size:9px;font-weight:800;color:var(--deep);text-align:center;margin-top:2px;line-height:1.2;max-width:60px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+@keyframes popIn{from{transform:scale(0) rotate(var(--r));opacity:0}50%{transform:scale(1.15) rotate(var(--r))}to{transform:scale(1) rotate(var(--r));opacity:1}}
+
+/* 키링 패널 */
+.kr-panel{flex:1;overflow-y:auto;padding:12px 14px 110px}
+.cat-row{margin-bottom:16px}
+.cat-title{font-size:11px;font-weight:800;letter-spacing:.8px;color:var(--ocean);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.cat-title::after{content:'';flex:1;height:1px;background:rgba(41,182,232,.2)}
+.bricks-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+
+.brick-chip{
+  background:#fff;border-radius:14px;
+  padding:10px 6px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:grab;border:2px solid transparent;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  transition:transform .12s,box-shadow .12s,opacity .2s;
+  touch-action:none;
+}
+.brick-chip:active{cursor:grabbing}
+.brick-chip.used{opacity:.28;pointer-events:none}
+.brick-chip.dimmed{opacity:.35;pointer-events:none}
+.brick-chip svg{width:80px;height:54px;display:block}
+.brick-label{font-size:10px;font-weight:700;color:var(--deep);text-align:center;line-height:1.3;word-break:keep-all}
+
+/* 완성 바 */
+.bottom-bar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:480px;padding:12px 20px 24px;
+  background:linear-gradient(to top,#d8f3fb 70%,transparent);
+}
+.btn-done{
+  width:100%;background:var(--deep);color:#fff;border:none;border-radius:99px;
+  padding:16px;font-size:16px;font-weight:800;cursor:pointer;
+  opacity:.3;transition:opacity .2s,transform .1s;pointer-events:none;
+}
+.btn-done.on{opacity:1;pointer-events:auto}
+.btn-done.on:active{transform:scale(.98)}
+
+/* 고스트 */
+#ghost{
+  position:fixed;pointer-events:none;z-index:9999;
+  display:none;flex-direction:column;align-items:center;
+  transform:translate(-50%,-60%) scale(1.15);
+  filter:drop-shadow(0 8px 20px rgba(10,61,85,.35));
+}
+#ghost svg{width:88px;height:60px}
+#ghost .gl{font-size:11px;font-weight:800;color:var(--deep);text-align:center;background:rgba(255,255,255,.85);border-radius:6px;padding:1px 6px;margin-top:2px}
+
+/* ════ 결과 화면 ════ */
+#result{
+  min-height:100svh;
+  background:linear-gradient(160deg,#a0d8f0 0%,#c8eefa 50%,#fff6d0 100%);
+  align-items:center;padding:44px 20px 60px;
+}
+.res-eye{font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--ocean);margin-bottom:8px}
+.res-h{font-size:22px;font-weight:900;color:var(--deep);text-align:center;line-height:1.35;margin-bottom:24px;white-space:pre-line}
+#result-card{
+  background:#fff;border-radius:28px;width:100%;max-width:360px;
+  padding:26px 18px 22px;box-shadow:0 12px 48px rgba(10,61,85,.16);text-align:center;
+}
+.rc-eye{font-size:10px;font-weight:800;letter-spacing:2px;color:#90b8cc;margin-bottom:14px}
+.rc-bag-area{position:relative;width:250px;height:250px;margin:0 auto 16px}
+#rc-placed{position:absolute;inset:0;pointer-events:none}
+.rc-kr{position:absolute;display:flex;flex-direction:column;align-items:center}
+.rc-kr .rr{width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(10,61,85,.35);background:rgba(255,255,255,.8)}
+.rc-kr .rs{width:2px;height:10px;background:rgba(10,61,85,.25)}
+.rc-kr svg{width:42px;height:28px}
+.rc-bag-name{font-size:15px;font-weight:900;color:var(--deep);line-height:1.4;margin-bottom:10px;white-space:pre-line}
+.rc-tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin-bottom:14px}
+.rc-tag{background:#e8f6fc;color:var(--ocean);font-size:11px;font-weight:700;padding:3px 10px;border-radius:99px}
+.rc-hash{font-size:11px;color:#aac;margin-bottom:6px}
+.rc-logo{font-size:12px;font-weight:900;color:var(--deep);letter-spacing:1px}
+.res-btns{width:100%;max-width:360px;margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.btn-save{background:var(--ocean);color:#fff;border:none;border-radius:99px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(41,182,232,.35)}
+.btn-cta{background:var(--deep);color:#fff;border:none;border-radius:99px;padding:15px;font-size:15px;font-weight:800;cursor:pointer}
+.btn-again{background:none;border:none;color:#4a7a90;font-size:13px;padding:8px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.guide-box{background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border-radius:16px;padding:16px 18px;width:100%;max-width:360px;margin-top:18px;font-size:12px;color:#4a7a90;line-height:1.8;text-align:left}
+.guide-box strong{color:var(--deep)}
+</style>
+</head>
+<body>
+
+<div id="ghost">
+  <svg id="ghost-svg"></svg>
+  <div class="gl" id="ghost-label"></div>
+</div>
+
+<!-- ════ 인트로 ════ -->
+<div id="intro" class="screen active">
+  <div class="intro-pill">🌊 LEGOLAND × DIG SUMMER PLAY</div>
+  <h1 class="intro-h">왓츠 인 마이<br>썸머 블록? 🧱</h1>
+  <p class="intro-p">레고랜드 여름 아이템 블록 키링을<br>비치백에 자유롭게 달아봐요!<br>5개를 채우면 내 타입이 나와요.</p>
+  <div class="intro-bag-wrap">
+    <svg viewBox="0 0 220 190" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="im" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+          <line x1="0" y1="0" x2="22" y2="0" stroke="#90cde4" stroke-width="1.2"/>
+          <line x1="0" y1="0" x2="0" y2="22" stroke="#90cde4" stroke-width="1.2"/>
+        </pattern>
+      </defs>
+      <!-- shadow -->
+      <ellipse cx="110" cy="184" rx="88" ry="8" fill="rgba(10,61,85,.12)"/>
+      <!-- depth right -->
+      <path d="M186 52 L206 62 L206 168 L186 158 Z" fill="rgba(140,200,228,.55)" stroke="#7bbcd4" stroke-width="1"/>
+      <!-- body -->
+      <rect x="22" y="52" width="164" height="108" rx="18" fill="rgba(220,243,254,.55)" stroke="#7bbcd4" stroke-width="2.5"/>
+      <rect x="22" y="52" width="164" height="108" rx="18" fill="url(#im)" opacity=".7"/>
+      <!-- top trim -->
+      <rect x="18" y="45" width="172" height="12" rx="6" fill="#29b6e8"/>
+      <!-- depth top -->
+      <path d="M190 45 L210 55 L190 57 Z" fill="#1a9fc8"/>
+      <!-- handle L -->
+      <path d="M70 45 Q62 12 88 8 Q114 4 110 45" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
+      <!-- handle R -->
+      <path d="M130 45 Q126 4 152 8 Q178 4 170 45" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
+      <!-- label patch -->
+      <rect x="76" y="85" width="68" height="42" rx="7" fill="rgba(255,255,255,.75)"/>
+      <text x="110" y="103" text-anchor="middle" font-size="7.5" fill="#1a8fc1" font-weight="800" letter-spacing="1">LEGOLAND</text>
+      <text x="110" y="114" text-anchor="middle" font-size="7" fill="#5a8fa8">SUMMER PLAY</text>
+      <text x="110" y="123" text-anchor="middle" font-size="7" fill="#5a8fa8">2025</text>
+      <!-- ? -->
+      <text x="110" y="75" text-anchor="middle" font-size="16" fill="#1a8fc1" opacity=".35">? ? ?</text>
+    </svg>
+  </div>
+  <button class="btn-go" onclick="showScreen('drag-screen')">블록 키링 달러 가기 →</button>
+</div>
+
+<!-- ════ 드래그 화면 ════ -->
+<div id="drag-screen" class="screen">
+  <div class="top-bar">
+    <h2>비치백에 키링을 달아봐요</h2>
+    <p>블록을 꾹 눌러 가방 위에 자유롭게 놓기!</p>
+    <div class="dot-row">
+      <div class="dot" id="d0"></div><div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div><div class="dot" id="d3"></div>
+      <div class="dot" id="d4"></div>
+    </div>
+  </div>
+
+  <div class="bag-zone" id="bag-zone">
+    <div class="drop-hint" id="drop-hint"></div>
+    <div class="bag-3d-wrap" id="bag-wrap">
+      <div id="placed-layer"></div>
+      <svg id="bag-svg" viewBox="0 0 280 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <defs>
+          <pattern id="mesh" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="24" y2="0" stroke="#90cde4" stroke-width="1.2"/>
+            <line x1="0" y1="0" x2="0" y2="24" stroke="#90cde4" stroke-width="1.2"/>
+          </pattern>
+          <filter id="bagShadow">
+            <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="rgba(10,61,85,.2)"/>
+          </filter>
+          <linearGradient id="handleG" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1a9fc8"/><stop offset="100%" stop-color="#5dd0f0"/>
+          </linearGradient>
+          <linearGradient id="trimG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3dc8f0"/><stop offset="100%" stop-color="#1a9fc8"/>
+          </linearGradient>
+          <linearGradient id="sideG" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="rgba(160,220,245,.7)"/><stop offset="100%" stop-color="rgba(120,190,220,.5)"/>
+          </linearGradient>
+        </defs>
+        <!-- shadow -->
+        <ellipse cx="142" cy="293" rx="100" ry="9" fill="rgba(10,61,85,.13)"/>
+        <!-- 3D depth right face -->
+        <path d="M244 68 L272 80 L272 278 L244 266 Z" fill="url(#sideG)" stroke="#80bcd4" stroke-width="1.5"/>
+        <!-- 3D depth bottom -->
+        <path d="M18 268 L244 268 L272 280 L46 280 Z" fill="rgba(140,200,230,.5)" stroke="#80bcd4" stroke-width="1"/>
+        <!-- main body -->
+        <rect x="18" y="68" width="226" height="200" rx="22" fill="rgba(215,242,254,.52)" stroke="#80c8e0" stroke-width="3" filter="url(#bagShadow)"/>
+        <!-- mesh overlay -->
+        <rect x="18" y="68" width="226" height="200" rx="22" fill="url(#mesh)" opacity=".75"/>
+        <!-- inner sheen -->
+        <rect x="18" y="68" width="226" height="40" rx="22" fill="rgba(255,255,255,.22)"/>
+        <!-- top trim bar -->
+        <rect x="12" y="58" width="238" height="16" rx="8" fill="url(#trimG)"/>
+        <!-- trim top shine -->
+        <rect x="12" y="58" width="238" height="6" rx="4" fill="rgba(255,255,255,.35)"/>
+        <!-- 3D trim side -->
+        <path d="M250 58 L278 70 L278 76 L250 74 Z" fill="#1a9fc8" opacity=".8"/>
+        <!-- handle left -->
+        <path d="M78 58 Q68 14 100 10 Q132 6 128 58" fill="none" stroke="url(#handleG)" stroke-width="13" stroke-linecap="round"/>
+        <path d="M78 58 Q68 14 100 10 Q132 6 128 58" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/>
+        <!-- handle right -->
+        <path d="M152 58 Q148 6 180 10 Q212 6 202 58" fill="none" stroke="url(#handleG)" stroke-width="13" stroke-linecap="round"/>
+        <path d="M152 58 Q148 6 180 10 Q212 6 202 58" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="5" stroke-linecap="round"/>
+        <!-- label patch -->
+        <rect x="88" y="168" width="108" height="58" rx="9" fill="rgba(255,255,255,.76)"/>
+        <rect x="88" y="168" width="108" height="58" rx="9" fill="none" stroke="rgba(41,182,232,.25)" stroke-width="1.5"/>
+        <text x="142" y="188" text-anchor="middle" font-size="9.5" fill="#1a8fc1" font-weight="800" letter-spacing="1.2">LEGOLAND</text>
+        <text x="142" y="202" text-anchor="middle" font-size="8.5" fill="#5a8fa8">SUMMER PLAY</text>
+        <text x="142" y="216" text-anchor="middle" font-size="8.5" fill="#5a8fa8">2025 × DIG</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="kr-panel" id="kr-panel"></div>
+
+  <div class="bottom-bar">
+    <button class="btn-done" id="btn-done" onclick="goResult()">비치백 완성하기 ✨</button>
+  </div>
+</div>
+
+<!-- ════ 결과 화면 ════ -->
+<div id="result" class="screen">
+  <div class="res-eye">✨ 나만의 썸머 비치백 완성!</div>
+  <div class="res-h" id="res-h"></div>
+  <div id="result-card">
+    <div class="rc-eye">MY SUMMER BEACH BAG</div>
+    <div class="rc-bag-area">
+      <div id="rc-placed"></div>
+      <svg viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0;width:100%;height:100%">
+        <defs>
+          <pattern id="mesh2" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="20" y2="0" stroke="#90cde4" stroke-width="1"/>
+            <line x1="0" y1="0" x2="0" y2="20" stroke="#90cde4" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <ellipse cx="125" cy="244" rx="88" ry="7" fill="rgba(10,61,85,.1)"/>
+        <path d="M214 58 L234 67 L234 232 L214 223 Z" fill="rgba(160,220,245,.55)" stroke="#80bcd4" stroke-width="1.2"/>
+        <rect x="14" y="58" width="200" height="166" rx="18" fill="rgba(215,242,254,.55)" stroke="#80c8e0" stroke-width="2.5"/>
+        <rect x="14" y="58" width="200" height="166" rx="18" fill="url(#mesh2)" opacity=".7"/>
+        <rect x="8" y="50" width="212" height="14" rx="7" fill="#29b6e8"/>
+        <path d="M62 50 Q55 16 80 12 Q105 8 102 50" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
+        <path d="M124 50 Q122 8 148 12 Q173 8 168 50" fill="none" stroke="#29b6e8" stroke-width="10" stroke-linecap="round"/>
+        <rect x="78" y="142" width="96" height="52" rx="8" fill="rgba(255,255,255,.78)"/>
+        <text x="126" y="160" text-anchor="middle" font-size="8.5" fill="#1a8fc1" font-weight="800" letter-spacing="1">LEGOLAND</text>
+        <text x="126" y="173" text-anchor="middle" font-size="7.5" fill="#5a8fa8">SUMMER PLAY</text>
+        <text x="126" y="185" text-anchor="middle" font-size="7.5" fill="#5a8fa8">2025 × DIG</text>
+      </svg>
+    </div>
+    <div class="rc-bag-name" id="rc-name"></div>
+    <div class="rc-tags" id="rc-tags"></div>
+    <div class="rc-hash">#디그 #레고랜드썸머플레이</div>
+    <div class="rc-logo">DIG × LEGOLAND</div>
+  </div>
+  <div class="res-btns">
+    <button class="btn-save" onclick="saveImg()">📸 이미지 저장하기</button>
+    <button class="btn-cta" onclick="goCTA()">🎉 페스티벌플러스에서 응모하기</button>
+    <button class="btn-again" onclick="resetAll()">처음부터 다시하기</button>
+  </div>
+  <div class="guide-box">
+    <strong>응모 방법</strong><br>
+    1. 이미지 저장 후 페스티벌플러스 이벤트 페이지 로그인<br>
+    2. 참여 후기란에 <strong>이미지 첨부 + 기대평</strong> 작성<br>
+    3. 필수 해시태그 <strong>#디그</strong> 포함 시 응모 완료!<br>
+    🎁 레고랜드 자유이용권 30명 추첨 증정
+  </div>
+</div>
+
+<script>
+/* ── 데이터 ── */
+const CATS = [
+  { id:'activity', name:'💦 액티비티', cv:'--c1', cl:'--c1l', cd:'--c1d',
+    items:[
+      {emoji:'🪣',label:'워터 버킷\n물폭탄 맞기'},
+      {emoji:'🏴‍☠️',label:'스플래쉬\n배틀 참전'},
+      {emoji:'🌊',label:'워터메이즈\n뛰어들기'},
+    ]},
+  { id:'food', name:'🍭 먹거리', cv:'--c2', cl:'--c2l', cd:'--c2d',
+    items:[
+      {emoji:'🍌',label:'초코 바나나\n마시기'},
+      {emoji:'🍜',label:'청귤 모밀\n먹기'},
+      {emoji:'🍉',label:'수박 주스\n마시기'},
+    ]},
+  { id:'party', name:'🎧 흥 폭발 파티', cv:'--c3', cl:'--c3l', cd:'--c3d',
+    items:[
+      {emoji:'🎵',label:'마리나\nDJ 파티'},
+      {emoji:'🎭',label:'파이러츠\n어드벤처'},
+      {emoji:'🎉',label:'브론즈 훅\n해적파티'},
+    ]},
+  { id:'rest', name:'🧊 안전제일 휴식', cv:'--c4', cl:'--c4l', cd:'--c4d',
+    items:[
+      {emoji:'☕',label:'브릭토피아\n라운지 휴식'},
+      {emoji:'⛱️',label:'그늘막\n더위 피하기'},
+      {emoji:'🏨',label:'썸머 드림\n호캉스'},
+    ]},
+  { id:'mission', name:'✨ 미션 & 굿즈', cv:'--c5', cl:'--c5l', cd:'--c5d',
+    items:[
+      {emoji:'🎴',label:'레-빙고\n포토카드 받기'},
+      {emoji:'🔍',label:'레고 수박\n찾기'},
+      {emoji:'🧤',label:'옐로우 핸즈\n득템'},
+    ]},
+];
+
+const RESULTS = {
+  activity:'물 만난 에너자이저의\n스플래쉬 비치백 💦',
+  food:'당 충전 100%!\n달콤 달달 썸머 비치백 🍭',
+  party:'미친 텐션!\n썸머 댄스 파티 비치백 🎧',
+  rest:'방전 주의!\n휴식도 필요해 비치백 🧊',
+  mission:'빙고 올클리어!\n굿즈 모으기 비치백 ✨',
+  allround:'올라운더의\n무지개 비치백 🌈',
+};
+
+/* ── 레고 블록 SVG 생성 ── */
+function legoBrick(emoji, c, cl, cd, w=80, h=54){
+  const em = w*.55, ey = h*.78;
+  const sw1 = w*.32, sw2 = w*.68; // stud x positions
+  const sy = h*.3, sr = w*.17, sry = h*.13;
+  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+  <rect x="2" y="${h*.38}" width="${w-4}" height="${h*.58}" rx="4" fill="${cd}" opacity=".4" transform="translate(1,2)"/>
+  <rect x="2" y="${h*.38}" width="${w-4}" height="${h*.58}" rx="4" fill="${c}"/>
+  <rect x="2" y="${h*.38}" width="${w-4}" height="${h*.14}" rx="4" fill="${cl}" opacity=".45"/>
+  <rect x="2" y="${h*.88}" width="${w-4}" height="${h*.08}" rx="0 0 4 4" fill="${cd}" opacity=".35"/>
+  <ellipse cx="${sw1}" cy="${h*.34}" rx="${sr}" ry="${sry}" fill="${cd}" opacity=".6"/>
+  <ellipse cx="${sw1}" cy="${h*.26}" rx="${sr}" ry="${sry}" fill="${cl}"/>
+  <ellipse cx="${sw1}" cy="${h*.26}" rx="${sr*.6}" ry="${sry*.65}" fill="${c}"/>
+  <ellipse cx="${sw2}" cy="${h*.34}" rx="${sr}" ry="${sry}" fill="${cd}" opacity=".6"/>
+  <ellipse cx="${sw2}" cy="${h*.26}" rx="${sr}" ry="${sry}" fill="${cl}"/>
+  <ellipse cx="${sw2}" cy="${h*.26}" rx="${sr*.6}" ry="${sry*.65}" fill="${c}"/>
+  <text x="${w/2}" y="${ey}" text-anchor="middle" font-size="${em}" dominant-baseline="auto">${emoji}</text>
+</svg>`;
+}
+
+/* ── CSS 변수값 ── */
+const rootStyle = getComputedStyle(document.documentElement);
+function cv(name){ return rootStyle.getPropertyValue(name).trim(); }
+
+/* 카테고리별 색상 캐시 */
+const CAT_COLORS = {};
+CATS.forEach(cat=>{
+  CAT_COLORS[cat.id] = {
+    c: cv(cat.cv), cl: cv(cat.cl), cd: cv(cat.cd)
+  };
+});
+
+/* ── 상태 ── */
+let placed = []; // {catId, emoji, label, x, y, rot}
+let dragState = null;
+
+/* ── 화면 전환 ── */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  if(id==='drag-screen') renderPanel();
+}
+
+/* ── 패널 렌더 ── */
+function renderPanel(){
+  const panel = document.getElementById('kr-panel');
+  panel.innerHTML = '';
+  CATS.forEach(cat=>{
+    const row = document.createElement('div');
+    row.className = 'cat-row';
+    const title = document.createElement('div');
+    title.className = 'cat-title';
+    title.textContent = cat.name;
+    row.appendChild(title);
+    const grid = document.createElement('div');
+    grid.className = 'bricks-row';
+    const {c,cl,cd} = CAT_COLORS[cat.id];
+    cat.items.forEach(item=>{
+      const chip = document.createElement('div');
+      chip.className = 'brick-chip';
+      chip.dataset.catId = cat.id;
+      chip.dataset.emoji = item.emoji;
+      chip.dataset.label = item.label;
+      chip.innerHTML = legoBrick(item.emoji,c,cl,cd,80,54)
+        + `<div class="brick-label">${item.label.replace('\n','<br>')}</div>`;
+      chip.addEventListener('pointerdown', onDown);
+      grid.appendChild(chip);
+    });
+    row.appendChild(grid);
+    panel.appendChild(row);
+  });
+}
+
+/* ── 드래그 ── */
+function onDown(e){
+  if(placed.length >= 5) return;
+  const chip = e.currentTarget;
+  if(chip.classList.contains('used')) return;
+  e.preventDefault();
+
+  const catId = chip.dataset.catId;
+  const emoji = chip.dataset.emoji;
+  const label = chip.dataset.label;
+  const {c,cl,cd} = CAT_COLORS[catId];
+
+  // 고스트 세팅
+  const ghost = document.getElementById('ghost');
+  document.getElementById('ghost-svg').innerHTML = legoBrick(emoji,c,cl,cd,88,60);
+  document.getElementById('ghost-label').textContent = label.replace('\n',' ');
+  ghost.style.display = 'flex';
+  moveGhost(e);
+
+  dragState = {chip, catId, emoji, label, c, cl, cd};
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp);
+}
+
+function onMove(e){
+  if(!dragState) return;
+  moveGhost(e);
+  const zone = document.getElementById('bag-zone').getBoundingClientRect();
+  const inside = e.clientX>=zone.left && e.clientX<=zone.right
+               && e.clientY>=zone.top  && e.clientY<=zone.bottom;
+  document.getElementById('drop-hint').classList.toggle('hover', inside);
+}
+
+function onUp(e){
+  if(!dragState) return;
+  document.getElementById('ghost').style.display = 'none';
+  document.getElementById('drop-hint').classList.remove('hover');
+
+  const zone = document.getElementById('bag-zone');
+  const zr = zone.getBoundingClientRect();
+  const inside = e.clientX>=zr.left && e.clientX<=zr.right
+               && e.clientY>=zr.top  && e.clientY<=zr.bottom;
+
+  if(inside && placed.length < 5){
+    // 놓인 위치 계산 (키링 중심 기준)
+    const KW = 62, KH = 72; // placed keyring element size
+    let x = e.clientX - zr.left - KW/2;
+    let y = e.clientY - zr.top  - KH/2;
+    x = Math.max(0, Math.min(zr.width - KW, x));
+    y = Math.max(0, Math.min(zr.height - KH, y));
+    const rot = (Math.random() * 28 - 14).toFixed(1); // -14 ~ +14도
+
+    placed.push({...dragState, x, y, rot});
+    dragState.chip.classList.add('used');
+    if(placed.length >= 5){
+      document.querySelectorAll('.brick-chip:not(.used)').forEach(c=>c.classList.add('dimmed'));
+    }
+    renderPlaced();
+    updateDots();
+    updateBtn();
+  }
+
+  document.removeEventListener('pointermove', onMove);
+  document.removeEventListener('pointerup', onUp);
+  dragState = null;
+}
+
+function moveGhost(e){
+  const g = document.getElementById('ghost');
+  g.style.left = (e.clientX)+'px';
+  g.style.top  = (e.clientY)+'px';
+}
+
+/* ── 배치된 키링 렌더 ── */
+function renderPlaced(){
+  const layer = document.getElementById('placed-layer');
+  layer.innerHTML = '';
+  placed.forEach((p,i)=>{
+    const el = document.createElement('div');
+    el.className = 'placed-kr';
+    el.style.cssText = `left:${p.x}px;top:${p.y}px;--r:${p.rot}deg;
+      transform:rotate(${p.rot}deg);animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both`;
+    el.innerHTML = `<div class="pr"></div><div class="ps"></div>
+      ${legoBrick(p.emoji,p.c,p.cl,p.cd,52,36)}
+      <div class="pl">${p.emoji}</div>`;
+    el.title = '탭해서 제거';
+    el.addEventListener('click', ()=>removePlaced(i));
+    layer.appendChild(el);
+  });
+}
+
+function removePlaced(idx){
+  const p = placed[idx];
+  // chip 다시 활성화
+  document.querySelectorAll('.brick-chip').forEach(chip=>{
+    if(chip.dataset.catId===p.catId && chip.dataset.emoji===p.emoji){
+      chip.classList.remove('used');
+    }
+  });
+  placed.splice(idx,1);
+  if(placed.length < 5){
+    document.querySelectorAll('.brick-chip.dimmed').forEach(c=>c.classList.remove('dimmed'));
+  }
+  renderPlaced();
+  updateDots();
+  updateBtn();
+}
+
+function updateDots(){
+  for(let i=0;i<5;i++) document.getElementById('d'+i).classList.toggle('on', i<placed.length);
+}
+
+function updateBtn(){
+  const btn = document.getElementById('btn-done');
+  btn.classList.toggle('on', placed.length===5);
+}
+
+/* ── 결과 ── */
+function calcKey(){
+  const cnt={};
+  placed.forEach(p=>{cnt[p.catId]=(cnt[p.catId]||0)+1});
+  const max=Math.max(...Object.values(cnt));
+  if(max>=3) return Object.keys(cnt).find(k=>cnt[k]===max);
+  return 'allround';
+}
+
+function goResult(){
+  if(placed.length<5) return;
+  const key = calcKey();
+  const title = RESULTS[key];
+  document.getElementById('res-h').textContent = title;
+  document.getElementById('rc-name').textContent = title;
+
+  // 결과 카드 키링 (비율 맞춰 배치)
+  const zone = document.getElementById('bag-zone');
+  const zr = zone.getBoundingClientRect();
+  const rcArea = 250; // 결과 카드 bag area 크기
+  const scaleX = rcArea / zr.width;
+  const scaleY = rcArea / zr.height;
+
+  const rcPlaced = document.getElementById('rc-placed');
+  rcPlaced.innerHTML = '';
+  placed.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'rc-kr';
+    const rx = p.x * scaleX;
+    const ry = p.y * scaleY;
+    const {c,cl,cd} = CAT_COLORS[p.catId];
+    el.style.cssText = `left:${rx}px;top:${ry}px;transform:rotate(${p.rot}deg);position:absolute`;
+    el.innerHTML = `<div class="rr"></div><div class="rs"></div>${legoBrick(p.emoji,c,cl,cd,42,28)}`;
+    rcPlaced.appendChild(el);
+  });
+
+  // 태그
+  document.getElementById('rc-tags').innerHTML =
+    placed.map(p=>`<span class="rc-tag">${p.emoji} ${p.label.replace('\n',' ')}</span>`).join('');
+
+  showScreen('result');
+}
+
+/* ── 저장 ── */
+function saveImg(){
+  html2canvas(document.getElementById('result-card'),{scale:2.5,backgroundColor:'#fff',useCORS:true}).then(c=>{
+    const a=document.createElement('a');
+    a.download='나의_썸머_비치백.png';
+    a.href=c.toDataURL('image/png');
+    a.click();
+  });
+}
+
+function goCTA(){ alert('페스티벌플러스 이벤트 페이지 링크가 연결됩니다.'); }
+
+function resetAll(){
+  placed=[];
+  document.querySelectorAll('.brick-chip').forEach(c=>c.classList.remove('used','dimmed'));
+  renderPlaced();
+  updateDots();
+  updateBtn();
+  showScreen('intro');
+}
+</script>
+</body>
+</html>
